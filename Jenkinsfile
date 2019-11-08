@@ -11,16 +11,14 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-            	withDockerContainer(image: DOCKER_REGISTRY + '/' + MAVEN_IMAGE, args: '-l io.rancher.container.network=true') {
-                    mvn 'clean'
-                }
+            	mvn 'clean'
             }
         }
         stage('Build') {
             steps {
 	            in_toto_wrap(['stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainId': 'Supplychains/domain1/app1/petclinic'])
+	            			  'supplyChainId': 'Supplychains/argos-test-app'])
 	            {
 	                mvn 'install deploy xldeploy:generate-deployment-package'
 	            }
@@ -30,7 +28,7 @@ pipeline {
             steps {
 	            in_toto_wrap(['stepName': 'sonar',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainId': 'Supplychains/domain1/app1/petclinic'])
+	            			  'supplyChainId': 'Supplychains/argos-test-app'])
 	            {
                 	mvn "verify sonar:sonar -Dsonar.projectKey=rabobank_argos-test-app -Dsonar.organization=rabobank -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${ARGOS_TEST_SONAR_LOGIN}"
                 }
