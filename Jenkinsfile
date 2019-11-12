@@ -16,9 +16,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-	            in_toto_wrap(['stepName': 'build',
+	            argosWrapper(['stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainId': 'Supplychains/argos-test-app'])
+	            			  'supplyChainId': 'argos-test-app'])
 	            {
 	                mvn 'install deploy xldeploy:generate-deployment-package'
 	            }
@@ -26,9 +26,9 @@ pipeline {
         }
         stage('Sonar') {
             steps {
-	            in_toto_wrap(['stepName': 'sonar',
+	            argosWrapper(['stepName': 'sonar',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainId': 'Supplychains/argos-test-app'])
+	            			  'supplyChainId': 'argos-test-app'])
 	            {
                 	mvn "verify sonar:sonar -Dsonar.projectKey=rabobank_argos-test-app -Dsonar.organization=rabobank -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${ARGOS_TEST_SONAR_LOGIN}"
                 }
