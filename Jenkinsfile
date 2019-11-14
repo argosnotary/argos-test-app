@@ -20,7 +20,7 @@ pipeline {
 	            			  'privateKeyCredentialId': 'bob',
 	            			  'supplyChainId': 'argos-test-app'])
 	            {
-	                mvn 'install deploy xldeploy:generate-deployment-package'
+	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
 	            }
             }
         }
