@@ -24,6 +24,16 @@ pipeline {
 	            }
             }
         }
+        stage('Sonar') {
+            steps {
+	            argosWrapper(['stepName': 'sonar',
+	            			  'privateKeyCredentialId': 'bob',
+	            			  'supplyChainId': 'argos-test-app'])
+	            {
+                	mvn "verify sonar:sonar -Dsonar.host.url=http://sonarqube:9000"
+                }
+            }
+        }
     }
 }
 
