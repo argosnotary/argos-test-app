@@ -24,6 +24,7 @@ pipeline {
 	            }
             }
         }
+        /*
         stage('Sonar') {
             steps {
 	            argosWrapper(['stepName': 'sonar',
@@ -33,7 +34,7 @@ pipeline {
                 	mvn "verify sonar:sonar -Dsonar.host.url=http://sonarqube:9000"
                 }
             }
-        }
+        }*/
     }
 }
 
