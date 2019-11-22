@@ -18,7 +18,7 @@ pipeline {
             steps {
 	            argosWrapper(['stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainId': 'argos-test-app'])
+	            			  'supplyChainName': 'argos-test-app'])
 	            {
 	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
 	            }
