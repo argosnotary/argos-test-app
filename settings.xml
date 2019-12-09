@@ -1,4 +1,11 @@
 <settings>
+    <servers>
+        <server>
+            <id>nexus</id>
+            <username>admin</username>
+            <password>admin123</password>
+        </server>
+    </servers>
 	<profiles>
 		<profile>
 			<id>xld</id>
