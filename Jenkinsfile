@@ -1,8 +1,5 @@
 import hudson.model.*
 
-def VERSION = "1.0-SNAPSHOT"
-def PROJECT_NAME="petclinic"
-
 pipeline {
     agent any
     environment {
@@ -11,12 +8,13 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-            	mvn 'clean'
+            	mvn '-s settings.xml clean'
             }
         }
         stage('Build') {
             steps {
-	            argosWrapper(['stepName': 'build',
+	            argosWrapper(['layoutSegmentName': 'segment 1',
+	                          'stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
 	            			  'supplyChainName': 'argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
@@ -25,17 +23,18 @@ pipeline {
 	            }
             }
         }
-        /*
-        stage('Sonar') {
+        stage('Deploy') {
             steps {
-	            argosWrapper(['stepName': 'sonar',
-	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainId': 'argos-test-app'])
-	            {
-                	mvn "verify sonar:sonar -Dsonar.host.url=http://sonarqube:9000"
+                argosWrapper(['layoutSegmentName': 'segment 1',
+                              'stepName': 'deploy',
+                              'privateKeyCredentialId': 'bob',
+                              'supplyChainName': 'argos-test-app',
+                              'runId': "${BUILD_NUMBER}"])
+                {
+                    mvn "-s settings.xml deploy:deploy-file -Durl=${env.snapshotsUrl} -DrepositoryId=nexus -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
                 }
             }
-        }*/
+        }
     }
 }
 
