@@ -16,7 +16,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-	            argosWrapper(['stepName': 'build',
+	            argosWrapper(['segmentName': 'segment 1'
+	                          'stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
 	            			  'supplyChainName': 'argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
