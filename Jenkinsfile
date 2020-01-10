@@ -13,7 +13,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-	            argosWrapper(['stepName': 'build',
+	            argosWrapper(['layoutSegmentName': 'segment 1',
+	                          'stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
 	            			  'supplyChainName': 'argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
@@ -24,7 +25,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                argosWrapper(['stepName': 'deploy',
+                argosWrapper(['layoutSegmentName': 'segment 1',
+                              'stepName': 'deploy',
                               'privateKeyCredentialId': 'bob',
                               'supplyChainName': 'argos-test-app',
                               'runId': "${BUILD_NUMBER}"])
