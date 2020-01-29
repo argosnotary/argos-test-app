@@ -6,4 +6,18 @@
             <password>admin123</password>
         </server>
     </servers>
+	<profiles>
+		<profile>
+			<id>xld</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>xebialabs</id>
+					<url>https://dist.xebialabs.com/public/maven2/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
 </settings>
