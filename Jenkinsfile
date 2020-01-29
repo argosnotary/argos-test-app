@@ -56,7 +56,7 @@ pipeline {
                               'runId': "${timestamp}"])
                 {
                     script {
-                        approve
+                        approve()
                     }
                 }
             }
