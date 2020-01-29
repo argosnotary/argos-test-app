@@ -31,7 +31,7 @@ pipeline {
 	            			  'supplyChainName': 'argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
 	            {
-	                mvn '-s settings.xml install'
+	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
 	            }
             }
         }
@@ -47,9 +47,28 @@ pipeline {
                 }
             }
         }
+        stage('Approve') {
+            steps {
+                argosWrapper(['layoutSegmentName': 'segment 4',
+                              'stepName': 'approve',
+                              'privateKeyCredentialId': 'bob',
+                              'supplyChainName': 'argos-test-app',
+                              'runId': "${timestamp}"])
+                {
+                    approve
+                }
+            }
+        }
     }
 }
 
 def mvn(args) {
     sh "mvn ${args}"
 }
+
+def approve() {
+    sh "mkdir target/approve"
+    sh "unzip target/argos-test-app*.dar -d target/approve"
+    sh "cp target/argos-test-app.war target/approve/argos-test-app.war"
+}
+
