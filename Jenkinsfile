@@ -13,9 +13,6 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-            	mvn '-s settings.xml clean'
-            }
-            steps {
                 argosWrapper(['layoutSegmentName': 'segment 1',
                               'stepName': 'clean',
                               'privateKeyCredentialId': 'bob',
