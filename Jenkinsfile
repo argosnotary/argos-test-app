@@ -31,7 +31,7 @@ pipeline {
 	            			  'supplyChainName': 'argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
 	            {
-	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
+	                mvn '-s settings.xml install'
 	            }
             }
         }
