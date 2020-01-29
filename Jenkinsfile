@@ -55,7 +55,9 @@ pipeline {
                               'supplyChainName': 'argos-test-app',
                               'runId': "${timestamp}"])
                 {
-                    approve
+                    script {
+                        approve
+                    }
                 }
             }
         }
