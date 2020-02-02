@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
-        stage('Approve') {
+        stage('Approval bob') {
             steps {
                 argosWrapper(['layoutSegmentName': 'segment 4',
                               'stepName': 'approve',
@@ -56,7 +56,21 @@ pipeline {
                               'runId': "${timestamp}"])
                 {
                     script {
-                        approve()
+                        sh 'echo approve'
+                    }
+                }
+            }
+        }
+        stage('Approval alice') {
+            steps {
+                argosWrapper(['layoutSegmentName': 'segment 4',
+                              'stepName': 'approve',
+                              'privateKeyCredentialId': 'alice',
+                              'supplyChainName': 'argos-test-app',
+                              'runId': "${timestamp}"])
+                {
+                    script {
+                        sh 'echo approve'
                     }
                 }
             }
@@ -68,9 +82,4 @@ def mvn(args) {
     sh "mvn ${args}"
 }
 
-def approve() {
-    sh "mkdir target/approve"
-    sh "unzip target/argos-test-app*.dar -d target/approve"
-    sh "cp target/argos-test-app.war target/approve/argos-test-app.war"
-}
 
