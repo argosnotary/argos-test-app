@@ -16,7 +16,7 @@ pipeline {
 	            argosWrapper(['layoutSegmentName': 'segment 1',
 	                          'stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainName': 'argos-test-app',
+	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
 	            {
 	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
@@ -28,7 +28,7 @@ pipeline {
                 argosWrapper(['layoutSegmentName': 'segment 1',
                               'stepName': 'deploy',
                               'privateKeyCredentialId': 'bob',
-                              'supplyChainName': 'argos-test-app',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${BUILD_NUMBER}"])
                 {
                     mvn "-s settings.xml deploy:deploy-file -Durl=${env.snapshotsUrl} -DrepositoryId=nexus -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
