@@ -16,7 +16,7 @@ pipeline {
                 argosWrapper(['layoutSegmentName': 'segment 1',
                               'stepName': 'clean',
                               'privateKeyCredentialId': 'bob',
-                              'supplyChainName': 'argos-test-app',
+                              'supplyChainName': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
                     mvn '-s settings.xml clean'
