@@ -16,7 +16,7 @@ pipeline {
                 argosWrapper(['layoutSegmentName': 'segment 1',
                               'stepName': 'clean',
                               'privateKeyCredentialId': 'bob',
-                              'supplyChainName': 'root_label.child_label:argos-test-app',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
                     mvn '-s settings.xml clean'
@@ -28,7 +28,7 @@ pipeline {
 	            argosWrapper(['layoutSegmentName': 'segment 2',
 	                          'stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
-	            			  'supplyChainName': 'root_label.child_label:argos-test-app',
+	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
 	            {
 	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
@@ -40,7 +40,7 @@ pipeline {
                 argosWrapper(['layoutSegmentName': 'segment 3',
                               'stepName': 'deploy',
                               'privateKeyCredentialId': 'bob',
-                              'supplyChainName': 'root_label.child_label:argos-test-app',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${timestamp}"])
                 {
                     mvn "-s settings.xml deploy:deploy-file -Durl=${env.snapshotsUrl} -DrepositoryId=nexus -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
@@ -52,7 +52,7 @@ pipeline {
                 argosWrapper(['layoutSegmentName': 'segment 4',
                               'stepName': 'approve',
                               'privateKeyCredentialId': 'bob',
-                              'supplyChainName': 'root_label.child_label:argos-test-app',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${timestamp}"])
                 {
                     script {
@@ -66,7 +66,7 @@ pipeline {
                 argosWrapper(['layoutSegmentName': 'segment 4',
                               'stepName': 'approve',
                               'privateKeyCredentialId': 'alice',
-                              'supplyChainName': 'root_label.child_label:argos-test-app',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${timestamp}"])
                 {
                     script {
