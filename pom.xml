@@ -23,6 +23,18 @@
                             <contextRoot>argos-test-app</contextRoot>
                         </tomcat.War>
                     </deployables>
+                    <serverAddress>xldeploy</serverAddress>
+                    <secured>false</secured>
+                    <port>4516</port>
+                    <username>admin</username>
+                    <password>admin</password>
+                    <applicationName>argos/argos-test-app</applicationName>
+                    <environmentId>Environments/argos/argos</environmentId>
+                    <generateDeployedOnUpgrade>true</generateDeployedOnUpgrade>
+                    <deploymentPackageProperties>
+                        <orchestrator>parallel-by-container</orchestrator>
+                    </deploymentPackageProperties>
+                    <!-- <testMode>true</testMode> -->
                 </configuration>
             </plugin>
             <plugin>
