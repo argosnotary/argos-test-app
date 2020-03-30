@@ -79,7 +79,7 @@ pipeline {
         }
         stage('Deploy to tomcat') {
             steps {
-                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "argos/argos-test-app/${revision}"
+                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "Applications/argos/argos-test-app/${revision}"
             }
         }
     }
