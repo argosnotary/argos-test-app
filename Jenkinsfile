@@ -13,11 +13,11 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                argosWrapper(['layoutSegmentName': 'jenkins',
+                argosWrapper(['layoutSegmentName': 'segment 1',
                               'stepName': 'clean',
                               'privateKeyCredentialId': 'bob',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${timestamp}"])
+                              'runId': "${GIT_COMMIT}"])
                 {
                     mvn '-s settings.xml clean'
                 }
@@ -25,11 +25,11 @@ pipeline {
         }
         stage('Build') {
             steps {
-	            argosWrapper(['layoutSegmentName': 'jenkins',
+	            argosWrapper(['layoutSegmentName': 'segment 2',
 	                          'stepName': 'build',
 	            			  'privateKeyCredentialId': 'bob',
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-				              'runId': "${timestamp}"])
+				              'runId': "${BUILD_NUMBER}"])
 	            {
 	                mvn '-s settings.xml install xldeploy:import'
 	            }
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                argosWrapper(['layoutSegmentName': 'jenkins',
+                argosWrapper(['layoutSegmentName': 'segment 3',
                               'stepName': 'deploy',
                               'privateKeyCredentialId': 'bob',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
@@ -47,16 +47,30 @@ pipeline {
                 }
             }
         }
-        stage('Collect dar') {
+        stage('Approval bob') {
             steps {
-                argosWrapper(['layoutSegmentName': 'jenkins',
+                argosWrapper(['layoutSegmentName': 'segment 4',
                               'stepName': 'approve',
                               'privateKeyCredentialId': 'bob',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${timestamp}"])
                 {
                     script {
-                        sh 'echo collect dar'
+                        sh 'echo approve'
+                    }
+                }
+            }
+        }
+        stage('Approval alice') {
+            steps {
+                argosWrapper(['layoutSegmentName': 'segment 4',
+                              'stepName': 'approve',
+                              'privateKeyCredentialId': 'alice',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
+                              'runId': "${timestamp}"])
+                {
+                    script {
+                        sh 'echo approve'
                     }
                 }
             }
