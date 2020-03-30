@@ -33,7 +33,7 @@ pipeline {
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${BUILD_NUMBER}"])
 	            {
-	                mvn '-s settings.xml install -Drevision=${timestamp} xldeploy:import'
+	                mvn "-s settings.xml install -Drevision=${revision} xldeploy:import"
 	            }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${timestamp}"])
                 {
-                    mvn "-s settings.xml deploy:deploy-file -Durl=${env.snapshotsUrl} -DrepositoryId=nexus -Drevision=${timestamp} -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
+                    mvn "-s settings.xml deploy:deploy-file -Durl=${env.releasesUrl} -DrepositoryId=nexus -Drevision=${revision} -Dversion=${revision} -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
                 }
             }
         }
@@ -79,7 +79,7 @@ pipeline {
         }
         stage('Deploy to tomcat') {
             steps {
-                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "argos/argos-test-app/1.0.${timestamp}"
+                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "argos/argos-test-app/${revision}"
             }
         }
     }
