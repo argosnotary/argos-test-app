@@ -56,8 +56,12 @@ pipeline {
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
+                script {
+                    
+
                     downLoadKey = sh(returnStdout: true, script: "curl -u admin:admin http://xldeploy:4516/deployit/export/deploymentpackage/localhost:4516/deployit/export/deploymentpackage/Applications/argos/argos-test-app/${revision}")
                     sh "mkdir target/collect; wget --http-user admin --http-password admin http://xldeploy:4516/deployit/internal/download/${downLoadKey} -O temp.zip; unzip temp.zip; rm temp.zip"
+                }
                 }
             }
         }
