@@ -78,7 +78,9 @@ pipeline {
             }
         }
         stage('Deploy to tomcat') {
-            xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "argos/argos-test-app/1.0.${timestamp}"
+            steps {
+                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "argos/argos-test-app/1.0.${timestamp}"
+            }
         }
     }
 }
