@@ -65,6 +65,9 @@ pipeline {
         }
         stage('Deploy to tomcat') {
             steps {
+                script {
+                    properties([[$class: 'JiraProjectProperty'], disableConcurrentBuilds()])
+                }
                 xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "Applications/argos/argos-test-app/${revision}"
             }
         }
