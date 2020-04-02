@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 def dateFormat = new SimpleDateFormat("yyyyMMddHHmmss")
 def date = new Date()
 def timestamp = dateFormat.format(new Date())
+def revision = "1.0.${timestamp}"
 
 pipeline {
     agent any
@@ -13,9 +14,9 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                argosWrapper(['layoutSegmentName': 'segment 1',
+                argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'clean',
-                              'privateKeyCredentialId': 'bob',
+                              'privateKeyCredentialId': 'default-npa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
@@ -25,54 +26,49 @@ pipeline {
         }
         stage('Build') {
             steps {
-	            argosWrapper(['layoutSegmentName': 'segment 2',
+	            argosWrapper(['layoutSegmentName': 'jenkins',
 	                          'stepName': 'build',
-	            			  'privateKeyCredentialId': 'bob',
+	            			  'privateKeyCredentialId': 'default-npa2',
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-				              'runId': "${BUILD_NUMBER}"])
+				              'runId': "${GIT_COMMIT}"])
 	            {
-	                mvn '-s settings.xml install xldeploy:generate-deployment-package'
+	                mvn "-s settings.xml install -Drevision=${revision} xldeploy:import"
 	            }
             }
         }
         stage('Deploy') {
             steps {
-                argosWrapper(['layoutSegmentName': 'segment 3',
+                argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'deploy',
-                              'privateKeyCredentialId': 'bob',
+                              'privateKeyCredentialId': 'default-npa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${timestamp}"])
+                              'runId': "${GIT_COMMIT}"])
                 {
-                    mvn "-s settings.xml deploy:deploy-file -Durl=${env.snapshotsUrl} -DrepositoryId=nexus -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
+                    mvn "-s settings.xml deploy:deploy-file -Durl=${env.releasesUrl} -DrepositoryId=nexus -Drevision=${revision} -Dversion=${revision} -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
                 }
             }
         }
-        stage('Approval bob') {
+        stage('Collect xldeploy dar') {
             steps {
-                argosWrapper(['layoutSegmentName': 'segment 4',
-                              'stepName': 'approve',
-                              'privateKeyCredentialId': 'bob',
+            argosWrapper(['layoutSegmentName': 'jenkins',
+                              'stepName': 'collect_dar',
+                              'privateKeyCredentialId': 'default-npa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${timestamp}"])
+                              'runId': "${GIT_COMMIT}"])
                 {
                     script {
-                        sh 'echo approve'
+                        downLoadKey = sh(returnStdout: true, script: "curl -u admin:admin http://xldeploy:4516/deployit/export/deploymentpackage/Applications/argos/argos-test-app/${revision}")
+                        sh "mkdir target/collect; wget --http-user admin --http-password admin http://xldeploy:4516/deployit/internal/download/${downLoadKey} -O temp.zip; unzip temp.zip; rm temp.zip"
                     }
                 }
             }
         }
-        stage('Approval alice') {
+        stage('Deploy to tomcat') {
             steps {
-                argosWrapper(['layoutSegmentName': 'segment 4',
-                              'stepName': 'approve',
-                              'privateKeyCredentialId': 'alice',
-                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${timestamp}"])
-                {
-                    script {
-                        sh 'echo approve'
-                    }
+                script {
+                    properties([[$class: 'JiraProjectProperty'], disableConcurrentBuilds()])
                 }
+                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "Applications/argos/argos-test-app/${revision}"
             }
         }
     }
