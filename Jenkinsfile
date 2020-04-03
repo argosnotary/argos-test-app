@@ -58,7 +58,7 @@ pipeline {
                 {
                     script {
                         downLoadKey = sh(returnStdout: true, script: "curl -u admin:admin http://xldeploy:4516/deployit/export/deploymentpackage/Applications/argos/argos-test-app/${revision}")
-                        sh "mkdir target/collect; wget --http-user admin --http-password admin http://xldeploy:4516/deployit/internal/download/${downLoadKey} -O temp.zip; unzip temp.zip; rm temp.zip"
+                        sh "mkdir target/collect; curl -u admin:admin -o temp.zip http://xldeploy:4516/deployit/internal/download/${downLoadKey} ; unzip -d target/collect temp.zip; rm temp.zip"
                     }
                 }
             }
