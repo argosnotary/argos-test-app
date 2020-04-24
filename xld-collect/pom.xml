@@ -5,6 +5,10 @@
     <artifactId>xld-collect</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
+    <properties>
+        <deployit-manifest-xml-location>override</deployit-manifest-xml-location>
+        <downloaded-artifacts-dir>override</downloaded-artifacts-dir>
+    </properties>
 
     <build>
         <plugins>
@@ -23,15 +27,15 @@
                     <properties>
                         <property>
                             <name>deployitManifestXmlLocation</name>
-                            <value>${project.build.directory}/deployit-working-dir/deployit-manifest.xml</value>
+                            <value>${deployit-manifest-xml-location}</value>
                         </property>
                         <property>
                             <name>downloadedArtifactsDir</name>
-                            <value>${project.build.directory}/collectedArtifacts</value>
+                            <value>${downloaded-artifacts-dir}</value>
                         </property>
                     </properties>
                     <scripts>
-                        <script>${project.basedir}/xld-collect/collect.groovy</script>
+                        <script>${project.basedir}/collect.groovy</script>
                     </scripts>
                 </configuration>
                 <dependencies>

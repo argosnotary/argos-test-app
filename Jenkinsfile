@@ -71,7 +71,7 @@ pipeline {
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
-                    mvn "-s settings.xml -f xld-collect/pom.xml gplus:execute -Drevision=${revision}"
+                    mvn "-s settings.xml -f xld-collect/pom.xml gplus:execute -Drevision=${revision} -Ddeployit-manifest-xml-location=target/deployit-working-dir/deployit-manifest.xml -Ddownloaded-artifacts-dir=target/collectedArtifacts"
                 }
             }
         }
