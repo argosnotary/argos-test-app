@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.rabobank.argos</groupId>
+    <artifactId>argos-test-app</artifactId>
+    <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.9.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <properties>
+                        <property>
+                            <name>deployitManifestXmlLocation</name>
+                            <value>${project.build.directory}/deployit-working-dir/deployit-manifest.xml</value>
+                        </property>
+                        <property>
+                            <name>downloadedArtifactsDir</name>
+                            <value>${project.build.directory}/collectedArtifacts</value>
+                        </property>
+                    </properties>
+                    <scripts>
+                        <script>${project.basedir}/xld-collect/collect.groovy</script>
+                    </scripts>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>3.0.3</version>
+                        <type>pom</type>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

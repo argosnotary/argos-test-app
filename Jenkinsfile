@@ -63,6 +63,18 @@ pipeline {
                 }
             }
         }
+        stage('Collect xldeploy dar external references') {
+            steps {
+            argosWrapper(['layoutSegmentName': 'jenkins',
+                              'stepName': 'collect_dar_external_references',
+                              'privateKeyCredentialId': 'default-npa2',
+                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
+                              'runId': "${GIT_COMMIT}"])
+                {
+                    mvn "-s settings.xml -f xld-collect/pom.xml gplus:execute -Drevision=${revision}"
+                }
+            }
+        }
         stage('Deploy to tomcat') {
             steps {
                 script {
