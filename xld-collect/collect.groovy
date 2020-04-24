@@ -22,7 +22,8 @@ def downloadArtifacts() {
     new File(downloadedArtifactsDir).mkdirs()
     def xml = new XmlSlurper().parseText(readFileString(deployitManifestXmlLocation))
     xml.depthFirst().findAll { it.name() == 'fileUri' && it.text().startsWith('http') }*.parent().each {
-        downloadArtifact(it.fileUri.text(),it.targetFileName.text())
+        def url = it.fileUri.text()
+        downloadArtifact(url,url.substring(url.lastIndexOf('/') + 1))
     }
 }
 
