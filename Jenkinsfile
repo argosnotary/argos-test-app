@@ -59,19 +59,8 @@ pipeline {
                     script {
                         downLoadKey = sh(returnStdout: true, script: "curl -u admin:admin http://xldeploy:4516/deployit/export/deploymentpackage/Applications/argos/argos-test-app/${revision}")
                         sh "mkdir target/collect; curl -u admin:admin -o temp.zip http://xldeploy:4516/deployit/internal/download/${downLoadKey} ; unzip -d target/collect temp.zip; rm temp.zip"
+                        mvn "-s settings.xml -f xld-collect/pom.xml gplus:execute -Drevision=${revision} -Ddeployit-manifest-xml-location=target/deployit-working-dir/deployit-manifest.xml -Ddownloaded-artifacts-dir=target/collect"
                     }
-                }
-            }
-        }
-        stage('Collect xldeploy dar external references') {
-            steps {
-            argosWrapper(['layoutSegmentName': 'jenkins',
-                              'stepName': 'collect_dar_external_references',
-                              'privateKeyCredentialId': 'default-npa2',
-                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${GIT_COMMIT}"])
-                {
-                    mvn "-s settings.xml -f xld-collect/pom.xml gplus:execute -Drevision=${revision} -Ddeployit-manifest-xml-location=target/deployit-working-dir/deployit-manifest.xml -Ddownloaded-artifacts-dir=target/collectedArtifacts"
                 }
             }
         }
