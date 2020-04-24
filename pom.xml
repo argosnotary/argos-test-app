@@ -22,7 +22,7 @@
                             <contextRoot>argos-test-app</contextRoot>
                         </tomcat.War>
                         <file.File name="file-lib-slf4j-api">
-                            <targetPath>{{BASEDIR}}/lib/shared</targetPath>
+                            <targetPath>/usr/local/tomcat/lib</targetPath>
                             <targetPathShared>true</targetPathShared>
                             <createTargetPath>true</createTargetPath>
                             <scanPlaceholders>false</scanPlaceholders>
