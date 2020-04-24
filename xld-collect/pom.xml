@@ -2,8 +2,9 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rabobank.argos</groupId>
-    <artifactId>argos-test-app</artifactId>
+    <artifactId>xld-collect</artifactId>
     <packaging>pom</packaging>
+    <version>${revision}</version>
 
     <build>
         <plugins>
