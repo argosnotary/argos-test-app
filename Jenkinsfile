@@ -16,7 +16,7 @@ pipeline {
             steps {
                 argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'clean',
-                              'privateKeyCredentialId': 'default-npa2',
+                              'privateKeyCredentialId': 'default-sa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
@@ -28,7 +28,7 @@ pipeline {
             steps {
 	            argosWrapper(['layoutSegmentName': 'jenkins',
 	                          'stepName': 'build',
-	            			  'privateKeyCredentialId': 'default-npa2',
+	            			  'privateKeyCredentialId': 'default-sa2',
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${GIT_COMMIT}"])
 	            {
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'deploy',
-                              'privateKeyCredentialId': 'default-npa2',
+                              'privateKeyCredentialId': 'default-sa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
