@@ -16,7 +16,7 @@ pipeline {
             steps {
                 argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'clean',
-                              'privateKeyCredentialId': 'default-npa2',
+                              'privateKeyCredentialId': 'default-sa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
@@ -28,7 +28,7 @@ pipeline {
             steps {
 	            argosWrapper(['layoutSegmentName': 'jenkins',
 	                          'stepName': 'build',
-	            			  'privateKeyCredentialId': 'default-npa2',
+	            			  'privateKeyCredentialId': 'default-sa2',
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${GIT_COMMIT}"])
 	            {
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'deploy',
-                              'privateKeyCredentialId': 'default-npa2',
+                              'privateKeyCredentialId': 'default-sa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
@@ -48,26 +48,15 @@ pipeline {
                 }
             }
         }
-        stage('Collect xldeploy dar') {
+        stage('Trigger Argos collect dar on xldeploy') {
             steps {
-            argosWrapper(['layoutSegmentName': 'jenkins',
-                              'stepName': 'collect_dar',
-                              'privateKeyCredentialId': 'default-npa2',
-                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${GIT_COMMIT}"])
-                {
-                    script {
-                        downLoadKey = sh(returnStdout: true, script: "curl -u admin:admin http://xldeploy:4516/deployit/export/deploymentpackage/Applications/argos/argos-test-app/${revision}")
-                        sh "mkdir target/collect; curl -u admin:admin -o temp.zip http://xldeploy:4516/deployit/internal/download/${downLoadKey} ; unzip -d target/collect temp.zip; rm temp.zip"
-                    }
+            	script {
+            	    sh "xldcli -host xldeploy -username admin -password admin -f ${WORKSPACE}/xld-collect/collect.py ${revision}"
                 }
             }
         }
         stage('Deploy to tomcat') {
             steps {
-                script {
-                    properties([[$class: 'JiraProjectProperty'], disableConcurrentBuilds()])
-                }
                 xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "Applications/argos/argos-test-app/${revision}"
             }
         }
@@ -77,5 +66,4 @@ pipeline {
 def mvn(args) {
     sh "mvn ${args}"
 }
-
 
