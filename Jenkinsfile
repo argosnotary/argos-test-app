@@ -12,18 +12,6 @@ pipeline {
         VERSION = "${VERSION}"
     }
     stages {
-        stage('Clean') {
-            steps {
-                argosWrapper(['layoutSegmentName': 'jenkins',
-                              'stepName': 'clean',
-                              'privateKeyCredentialId': 'default-sa2',
-                              'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
-                              'runId': "${GIT_COMMIT}"])
-                {
-                    mvn '-s settings.xml clean'
-                }
-            }
-        }
         stage('Build') {
             steps {
 	            argosWrapper(['layoutSegmentName': 'jenkins',
@@ -32,7 +20,7 @@ pipeline {
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${GIT_COMMIT}"])
 	            {
-	                mvn "-s settings.xml install -Drevision=${revision} xldeploy:import"
+	                mvn "-s settings.xml clean install -Drevision=${revision} xldeploy:import"
 	            }
             }
         }
