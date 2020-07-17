@@ -36,18 +36,6 @@ pipeline {
                 }
             }
         }
-        stage('Trigger Argos collect dar on xldeploy') {
-            steps {
-            	script {
-            	    sh "xldcli -host xldeploy -username admin -password admin -f ${WORKSPACE}/xld-collect/collect.py ${revision}"
-                }
-            }
-        }
-        stage('Deploy to tomcat') {
-            steps {
-                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "Applications/argos/argos-test-app/${revision}"
-            }
-        }
     }
 }
 
