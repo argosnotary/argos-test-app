@@ -20,7 +20,7 @@ pipeline {
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${GIT_COMMIT}"])
 	            {
-	                mvn "-s settings.xml clean install -Drevision=${revision} xldeploy:import"
+	                mvn "-s settings.xml clean install -Drevision=${revision}"
 	            }
             }
         }
