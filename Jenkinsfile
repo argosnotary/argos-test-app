@@ -20,7 +20,7 @@ pipeline {
 	            			  'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
 				              'runId': "${GIT_COMMIT}"])
 	            {
-	                mvn "-s settings.xml clean install -Drevision=${revision} xldeploy:import"
+	                mvn "-s settings.xml clean install -Drevision=${revision}"
 	            }
             }
         }
@@ -34,18 +34,6 @@ pipeline {
                 {
                     mvn "-s settings.xml deploy:deploy-file -Durl=${env.releasesUrl} -DrepositoryId=nexus -Drevision=${revision} -Dversion=${revision} -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
                 }
-            }
-        }
-        stage('Trigger Argos collect dar on xldeploy') {
-            steps {
-            	script {
-            	    sh "xldcli -host xldeploy -username admin -password admin -f ${WORKSPACE}/xld-collect/collect.py ${revision}"
-                }
-            }
-        }
-        stage('Deploy to tomcat') {
-            steps {
-                xldDeploy serverCredentials: 'xldeploy-credentials', environmentId: 'Environments/argos/argos', packageId: "Applications/argos/argos-test-app/${revision}"
             }
         }
     }
