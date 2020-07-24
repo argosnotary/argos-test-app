@@ -28,7 +28,6 @@ pipeline {
             steps {
                 argosWrapper(['layoutSegmentName': 'jenkins',
                               'stepName': 'deploy',
-                              'privateKeyCredentialId': 'default-sa2',
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
