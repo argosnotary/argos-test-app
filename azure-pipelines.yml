@@ -1,3 +1,5 @@
+trigger:
+  - azure
 pool:
   vmImage: 'ubuntu-latest'
 container:
