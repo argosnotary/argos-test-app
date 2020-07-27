@@ -11,8 +11,8 @@
     <properties>
         <xldeploy.username>admin</xldeploy.username>
         <xldeploy.password>admin</xldeploy.password>
-        <xldeploy.server>xldeploy</xldeploy.server>
-        <xldeploy.port>4516</xldeploy.port>
+        <xldeploy.server>xldeploy.argosnotary.org</xldeploy.server>
+        <xldeploy.port>80</xldeploy.port>
     </properties>
 
     <build>
