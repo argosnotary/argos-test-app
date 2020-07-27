@@ -1,0 +1,18 @@
+pool:
+  vmImage: 'ubuntu-latest'
+container:
+  image: dreux000/argos:argoswrapper
+steps:
+  - script: |
+      sh /usr/local/lib/bin/argos4j --phase pre --segment azure --step build --runId $BUILD_NUMBER
+      mvn -q clean install
+      sh /usr/local/lib/bin/argos4j --phase post --segment azure --step build --runId $BUILD_NUMBER
+    env:
+      WORKSPACE: $(System.DefaultWorkingDirectory)
+      BUILD_NUMBER: $(Build.BuildNumber)
+      ARGOS_SERVICE_BASE_URL: https://argos.dukesolutions.nl/api
+      CREDENTIALS_PASSPHRASE: $(credentials-pw)
+      CREDENTIALS_KEY_ID: $(credentials-key-id)
+      SUPPLY_CHAIN_NAME: argos-test-app
+      SUPPLY_CHAIN_PATH: com.rabobank
+    name: build
