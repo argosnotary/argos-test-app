@@ -11,7 +11,6 @@ steps:
       mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.SourceVersion) -Dxldeploy.server=xldeploy.argosnotary.org -Dxldeploy.port=80
       postLink --phase post --segment azure --step build --runId $BUILD_NUMBER
     env:
-      JAVA_HOME: /usr/local/openjdk-8
       WORKSPACE: $(System.DefaultWorkingDirectory)
       BUILD_NUMBER: $(Build.BuildNumber)
       ARGOS_SERVICE_BASE_URL: https://notary.argosnotary.org/api
