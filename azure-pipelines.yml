@@ -12,9 +12,9 @@ steps:
     env:
       WORKSPACE: $(System.DefaultWorkingDirectory)
       BUILD_NUMBER: $(Build.BuildNumber)
-      ARGOS_SERVICE_BASE_URL: https://argos.dukesolutions.nl/api
+      ARGOS_SERVICE_BASE_URL: https://notary.argosnotary.org/api
       CREDENTIALS_PASSPHRASE: $(credentials-pw)
       CREDENTIALS_KEY_ID: $(credentials-key-id)
       SUPPLY_CHAIN_NAME: argos-test-app
-      SUPPLY_CHAIN_PATH: com.rabobank
+      SUPPLY_CHAIN_PATH: rabobank
     name: build
