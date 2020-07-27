@@ -7,7 +7,7 @@ container:
 steps:
   - script: |
       postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER
-      mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.SourceVersion)
+      mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.SourceVersion) -DserverAddress=xldeploy.argosnotary.org -Dport=80
       postLink --phase post --segment azure --step build --runId $BUILD_NUMBER
     env:
       WORKSPACE: $(System.DefaultWorkingDirectory)
