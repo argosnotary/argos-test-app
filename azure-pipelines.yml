@@ -3,12 +3,12 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 container:
-  image: dreux000/argos:argoswrapper
+  image: argosnotary/argosbuild-argos4j-cli
 steps:
   - script: |
-      sh /usr/local/lib/bin/argos4j --phase pre --segment azure --step build --runId $BUILD_NUMBER
+      postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER
       mvn -q clean install
-      sh /usr/local/lib/bin/argos4j --phase post --segment azure --step build --runId $BUILD_NUMBER
+      postLink --phase post --segment azure --step build --runId $BUILD_NUMBER
     env:
       WORKSPACE: $(System.DefaultWorkingDirectory)
       BUILD_NUMBER: $(Build.BuildNumber)
