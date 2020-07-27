@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rabobank.argos</groupId>
@@ -8,6 +7,14 @@
     <version>${revision}</version>
     <name>Argos test app</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <deployit.username>admin</deployit.username>
+        <deployit.password>admin</deployit.password>
+        <deployit.server>xldeploy</deployit.server>
+        <deployit.port>4516</deployit.port>
+    </properties>
+
     <build>
         <finalName>argos-test-app</finalName>
         <plugins>
@@ -31,11 +38,11 @@
                             <targetFileName>slf4j-api.jar</targetFileName>
                         </file.File>
                     </deployables>
-                    <serverAddress>xldeploy</serverAddress>
+                    <serverAddress>${deployit.server}</serverAddress>
                     <secured>false</secured>
-                    <port>4516</port>
-                    <username>admin</username>
-                    <password>admin</password>
+                    <port>${deployit.port}</port>
+                    <username>${deployit.username}</username>
+                    <password>${deployit.password}</password>
                     <applicationName>argos/argos-test-app</applicationName>
                     <environmentId>Environments/argos/argos</environmentId>
                     <generateDeployedOnUpgrade>true</generateDeployedOnUpgrade>
