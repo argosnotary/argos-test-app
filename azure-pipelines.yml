@@ -3,13 +3,12 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 container:
-  image: argosnotary/argosbuild-argos4j-cli
+  image: argosnotary/argosbuild-argos4j-cli-snapshot:upgrade-argos4j
 steps:
   - script: |
       postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER
-      mvn -V
-      mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.SourceVersion) -Dxldeploy.server=xldeploy.argosnotary.org -Dxldeploy.port=80
-      postLink --phase post --segment azure --step build --runId $BUILD_NUMBER
+      export JAVA_HOME=/usr/local/openjdk-8; mvn -q --global-toolchains /etc/toolchains.xml -s settings.xml clean install xldeploy:import -Drevision=$(Build.SourceVersion) -Dxldeploy.server=xldeploy.argosnotary.org -Dxldeploy.port=80
+      export JAVA_HOME=/usr/local/openjdk-11; postLink --phase post --segment azure --step build --runId $BUILD_NUMBER
     env:
       WORKSPACE: $(System.DefaultWorkingDirectory)
       BUILD_NUMBER: $(Build.BuildNumber)
