@@ -3,7 +3,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 container:
-  image: argosnotary/argosbuild-argos4j-cli-snapshot:upgrade-argos4j
+  image: argosnotary/argosbuild-argos4j-cli:0.0.1
 steps:
   - script: |
       postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER
