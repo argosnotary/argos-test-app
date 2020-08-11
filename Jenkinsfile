@@ -35,6 +35,30 @@ pipeline {
                 }
             }
         }
+        stage('Release') {
+            steps {
+                argosRelease('argosSettingsFile': "${WORKSPACE}/argos-settings.json",
+                             'releaseConfigMap': ["local-collector": 
+                                [ "path": "${WORKSPACE}/target/argos-test-app.war",
+                                  "basePath": "${WORKSPACE}"
+                                ]
+                             ])
+
+            }
+        }
+        stage('Check') {
+            steps {
+                script {
+                hash = sh(returnStdout: true, script: "sha256sum ${WORKSPACE}/target/argos-test-app.war | cut -d ' ' -f1").trim()
+                result = sh(returnStdout: true, script: "curl -s ${env.argosServiceUrl}/api/supplychain/verification?artifactHashes=${hash} | cut -d':' -f2 | cut -d'}' -f1")
+                if (!result == true ) {
+                    currentBuild.result = 'FAILURE'
+                    exit 8 
+                }
+
+                }
+            }
+        }
     }
 }
 

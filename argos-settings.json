@@ -1,0 +1,16 @@
+{
+    "supplyChainName": "argos-test-app",
+	"path": [
+		"root_label",
+		"child_label"
+	],
+	"releaseCollectors": [
+        {
+            "name": "local-collector",
+            "collector": {
+                "type": "LocalFileCollector",
+                "path": "placeholder"
+            }
+        }
+	]
+}
