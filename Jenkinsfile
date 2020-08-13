@@ -35,27 +35,34 @@ pipeline {
                 }
             }
         }
-        stage('Release') {
+        stage('Release') {            
             steps {
-                argosRelease('argosSettingsFile': "${WORKSPACE}/argos-settings.json",
+                script {
+                    isValid = argosRelease('argosSettingsFile': "${WORKSPACE}/argos-settings.json",
                              'releaseConfigMap': ["local-collector": 
                                 [ "path": "${WORKSPACE}/target/argos-test-app.war",
                                   "basePath": "${WORKSPACE}"
                                 ]
                              ])
-
+                    if (!isValid) {
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
             }
         }
         stage('Check') {
+            when {
+                expression {
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
                 script {
-                hash = sh(returnStdout: true, script: "sha256sum ${WORKSPACE}/target/argos-test-app.war | cut -d ' ' -f1").trim()
-                result = sh(returnStdout: true, script: "curl -s ${env.argosServiceUrl}/api/supplychain/verification?artifactHashes=${hash} | cut -d':' -f2 | cut -d'}' -f1")
-                if (!result == true ) {
-                    currentBuild.result = 'FAILURE'
-                    exit 8 
-                }
-
+                    hash = sh(returnStdout: true, script: "sha256sum ${WORKSPACE}/target/argos-test-app.war | cut -d ' ' -f1").trim()
+                    result = sh(returnStdout: true, script: "curl -s ${env.argosServiceUrl}/api/supplychain/verification?artifactHashes=${hash} | cut -d':' -f2 | cut -d'}' -f1").trim()
+                    if (!(result == "true")) {
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
             }
         }
