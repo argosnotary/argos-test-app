@@ -19,44 +19,9 @@ steps:
     path: /root/.m2/repository
   environment:
   - JAVA_HOME: /usr/local/openjdk-8
-  - CREDENTIALS_PASSPHRASE: $(credentials-pw)
-  - CREDENTIALS_KEY_ID: $(credentials-key-id)
+  - CREDENTIALS_PASSPHRASE: $(credentials_pw)
+  - CREDENTIALS_KEY_ID: $(credentials_key_id)
   
-- name: approve
-  image: argosnotary/argosbuild-argos4j-cli:0.1.0
-  commands:
-  - argos-cli -f ./argos-settings.json postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER -w target/
-  - mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.BuildNumber) -Dxldeploy.server=xldeploy.argosnotary.org -Dxldeploy.port=80
-  - argos-cli -f ./argos-settings.json postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER -w target/
-  volumes:
-  - name: mvn_cache
-    path: /root/.m2/repository
-  environment:
-  - JAVA_HOME: /usr/local/openjdk-8
-  - CREDENTIALS_PASSPHRASE: $(credentials-pw)
-  - CREDENTIALS_KEY_ID: $(credentials-key-id)
-  
-- name: release
-  image: argosnotary/argosbuild-argos4j-cli:0.1.0
-  commands:
-  - argos-cli -f ./argos-settings.json release --phase pre --segment azure --step build --runId $BUILD_NUMBER -w target/
-  volumes:
-  - name: mvn_cache
-    path: /root/.m2/repository
-  environment:
-  - JAVA_HOME: /usr/local/openjdk-8
-  - CREDENTIALS_PASSPHRASE: $(credentials-pw)
-  - CREDENTIALS_KEY_ID: $(credentials-key-id)
-
-- name: deploy
-  image: argosnotary/argosbuild-argos4j-cli:0.1.0
-  commands:
-  - argos-cli -f ./argos-settings.json release --phase pre --segment azure --step build --runId $BUILD_NUMBER -w target/
-  environment:
-  - JAVA_HOME: /usr/local/openjdk-8
-  - CREDENTIALS_PASSPHRASE: $(credentials-pw)
-  - CREDENTIALS_KEY_ID: $(credentials-key-id)
-
 volumes:
 - name: mvn_cache
   temp: {}
