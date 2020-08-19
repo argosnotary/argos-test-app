@@ -1,0 +1,18 @@
+{
+    "supplyChainName": "argos-test-app",
+    "path": [
+        "com",
+        "rabobank",
+        "argos"
+    ],
+    "argosServerBaseUrl": "https://notary.argosnotary.org/api",
+    "releaseCollectors": [
+        {
+            "name": "xldeploy-remote-collector",
+            "collector": {
+                "type": "RemoteCollectorCollector",
+                "applicationName": "argos-test-app"
+            }
+        }
+    ]
+}

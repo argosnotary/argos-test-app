@@ -9,6 +9,7 @@ steps:
       argos-cli postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER
       mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.BuildNumber) -Dxldeploy.server=xldeploy.argosnotary.org -Dxldeploy.port=80
       argos-cli postLink --phase post --segment azure --step build --runId $BUILD_NUMBER
+      argos-cli -f ./argos-settings.json release  -c name=xld-remote-collector,username=admin,password=admin,versionName=$(Build.BuildNumber)
     env:
       JAVA_HOME: /usr/local/openjdk-8
       WORKSPACE: $(System.DefaultWorkingDirectory)
