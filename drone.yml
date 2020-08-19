@@ -13,14 +13,16 @@ steps:
   commands:
   - argos-cli -f ./argos-settings.json postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER -w target/
   - mvn -q -s settings.xml clean install xldeploy:import -Drevision=$(Build.BuildNumber) -Dxldeploy.server=xldeploy.argosnotary.org -Dxldeploy.port=80
-  - argos-cli -f ./argos-settings.json postLink --phase pre  --segment azure --step build --runId $BUILD_NUMBER -w target/
+  - argos-cli -f ./argos-settings.json postLink --phase pre --segment azure --step build --runId $BUILD_NUMBER -w target/
   volumes:
   - name: mvn_cache
     path: /root/.m2/repository
   environment:
-  - JAVA_HOME: /usr/local/openjdk-8
-  - CREDENTIALS_PASSPHRASE: $(credentials_pw)
-  - CREDENTIALS_KEY_ID: $(credentials_key_id)
+    JAVA_HOME: /usr/local/openjdk-8
+    CREDENTIALS_PASSPHRASE: 
+      from_secret: credentials_pw
+    CREDENTIALS_KEY_ID:  
+      from_secret: credentials_key_id
   
 volumes:
 - name: mvn_cache
