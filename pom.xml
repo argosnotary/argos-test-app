@@ -66,15 +66,4 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus</id>
-            <url>${snapshotsUrl}</url>
-        </snapshotRepository>
-        <repository>
-            <id>nexus</id>
-            <url>${releasesUrl}</url>
-        </repository>
-    </distributionManagement>
-
 </project>

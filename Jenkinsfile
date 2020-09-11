@@ -31,7 +31,7 @@ pipeline {
                               'supplyChainIdentifier': 'root_label.child_label:argos-test-app',
                               'runId': "${GIT_COMMIT}"])
                 {
-                    mvn "-s settings.xml deploy:deploy-file -Durl=${env.releasesUrl} -DrepositoryId=nexus -Drevision=${revision} -Dversion=${revision} -Dfile=target/argos-test-app.war -DpomFile=pom.xml"
+                    sh "echo dummy step"
                 }
             }
         }
