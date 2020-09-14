@@ -1,8 +1,8 @@
 {
     "supplyChainName": "argos-test-app",
 	"path": [
-		"root_label",
-		"child_label"
+		"root-label",
+		"child-label"
 	],
 	"releaseCollectors": [
         {
