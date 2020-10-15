@@ -8,6 +8,14 @@
     <version>${revision}</version>
     <name>Argos test app</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <xldeploy.username>admin</xldeploy.username>
+        <xldeploy.password>admin</xldeploy.password>
+        <xldeploy.server>xldeploy.argosnotary.org</xldeploy.server>
+        <xldeploy.port>80</xldeploy.port>
+    </properties>
+
     <build>
         <finalName>argos-test-app</finalName>
         <plugins>
@@ -31,11 +39,11 @@
                             <targetFileName>slf4j-api.jar</targetFileName>
                         </file.File>
                     </deployables>
-                    <serverAddress>xldeploy</serverAddress>
+                    <serverAddress>${xldeploy.server}</serverAddress>
                     <secured>false</secured>
-                    <port>4516</port>
-                    <username>admin</username>
-                    <password>admin</password>
+                    <port>${xldeploy.port}</port>
+                    <username>${xldeploy.username}</username>
+                    <password>${xldeploy.password}</password>
                     <applicationName>argos/argos-test-app</applicationName>
                     <environmentId>Environments/argos/argos</environmentId>
                     <generateDeployedOnUpgrade>true</generateDeployedOnUpgrade>

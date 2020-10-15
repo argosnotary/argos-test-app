@@ -1,0 +1,22 @@
+trigger:
+  - azure
+pool:
+  vmImage: 'ubuntu-latest'
+container:
+  image: argosnotary/argosbuild-argos4j-cli:1.0.1
+steps:
+  - script: |
+      mvn -q clean
+      argos-cli postLink --phase PRE --segment azure --step build --runId $BUILD_NUMBER -b ${SYSTEM_DEFAULTWORKINGDIRECTORY} -p ${SYSTEM_DEFAULTWORKINGDIRECTORY}
+      mvn -q -s settings.xml install xldeploy:import -Drevision=$(Build.BuildNumber) -Dxldeploy.server=xldeploy.argosnotary.com -Dxldeploy.port=80
+      argos-cli postLink --phase POST --segment azure --step build --runId $BUILD_NUMBER -b ${SYSTEM_DEFAULTWORKINGDIRECTORY} -p ${SYSTEM_DEFAULTWORKINGDIRECTORY}
+    env:
+      JAVA_HOME: /usr/local/openjdk-8
+      WORKSPACE: $(Agent.TempDirectory)
+      BUILD_NUMBER: $(Build.BuildNumber)
+      ARGOS_SERVICE_BASE_URL: https://cloud.argosnotary.com/api
+      CREDENTIALS_PASSPHRASE: $(credentials-pw)
+      CREDENTIALS_KEY_ID: $(credentials-key-id)
+      SUPPLY_CHAIN_NAME: argos-test-app
+      SUPPLY_CHAIN_PATH: com.argosnotary.argos-demo
+    name: build
